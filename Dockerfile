@@ -16,13 +16,15 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -ldflags="-s -w" -o /app/bin/app /app/main.go
 
-FROM alpine:latest AS azcopyDownload
-RUN apk add wget && wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
+FROM alpine:latest AS downloadazcopy
+RUN wget -O azcopy.tar.gz https://aka.ms/downloadazcopy-v10-linux && \
+    tar -xf azcopy.tar.gz
 
 FROM alpine:latest
 
 WORKDIR /app
 COPY --from=builder /app/bin/app /app/
-COPY --from=azcopyDownload azcopy /app/
+COPY --from=downloadazcopy /azcopy_linux*/azcopy /app/
+RUN apk add libc6-compat
 ENTRYPOINT [ "/app/app" ]
 
