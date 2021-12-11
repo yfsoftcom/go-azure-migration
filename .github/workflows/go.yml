@@ -25,13 +25,9 @@ jobs:
         password: ${{ secrets.DOCKER_PASS }}
 
     - name: Download azcopy linux version
-      run: |
-        wget https://azcopyvnext.azureedge.net/release20211027/azcopy_linux_amd64_10.13.0.tar.gz
-        tar -xvf azcopy_li*
-        mv azcopy_li*/azcopy .
+      run: wget https://azcopyvnext.azureedge.net/release20211027/azcopy_linux_amd64_10.13.0.tar.gz && tar -xvf azcopy_li* && mv azcopy_li*/azcopy .
 
     - name: Build and push
-      id: docker_build
       uses: docker/build-push-action@v2
       with:
         push: true
