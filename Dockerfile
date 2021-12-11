@@ -23,6 +23,6 @@ FROM alpine:latest
 
 WORKDIR /app
 COPY --from=builder /app/bin/app /app/
-COPY --from=azcopyDownload /app/azcopy /app/
+COPY --from=azcopyDownload azcopy /app/
 ENTRYPOINT [ "/app/app" ]
 
