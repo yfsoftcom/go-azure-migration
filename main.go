@@ -111,7 +111,7 @@ func copy(blob, srcSas, distSas string) string {
 }
 
 func runCommand(command string) (output string, err error) {
-	cmd := exec.Command("bash", "-c", command)
+	cmd := exec.Command("sh", "-c", command)
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &stdout
@@ -188,7 +188,6 @@ func main() {
 		}
 	}
 FINISH:
-	fmt.Println("wait for signal")
 	close(queue)
 	// wait for shutdown signal
 	<-finishSignal
