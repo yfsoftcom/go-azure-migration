@@ -17,12 +17,12 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -ldflags="-s -w" -o /app/bin/app /app/main.go
 
 FROM alpine:latest AS azcopyDownload
-RUN apk add wget && wget -O azcopy.tar.gz https://aka.ms/downloadazcopyprlinux && tar -xf azcopy.tar.gz
+RUN apk add wget && wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
 
 FROM alpine:latest
 
 WORKDIR /app
 COPY --from=builder /app/bin/app /app/
-COPY --from=azcopyDownload azcopy/azcopy /app/
+COPY --from=azcopyDownload azcopy /app/
 ENTRYPOINT [ "/app/app" ]
 
