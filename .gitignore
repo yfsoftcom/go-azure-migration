@@ -1,3 +1,4 @@
 azcopy
 bin/
 .DS_Store
+azcopy_linux_*
