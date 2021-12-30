@@ -16,4 +16,4 @@ Required exec
 
 
 Run command:
-./main -worker=5 -total=100000 -max=480000 -min=470000
+./main -worker=5 -total=100000 -max=480000 -min=470000 -folder=true

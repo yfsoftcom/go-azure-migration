@@ -64,18 +64,34 @@ func listBlobs(containerURL azblob.ContainerURL, prefix string, folder bool) ([]
 	list := []string{}
 	// List the container that we have created above
 	for marker := (azblob.Marker{}); marker.NotDone(); {
-		// Get a result segment starting with the blob indicated by the current Marker.
-		listBlob, err := containerURL.ListBlobsHierarchySegment(ctx, marker, "/", azblob.ListBlobsSegmentOptions{
-			Prefix:     prefix,
-			MaxResults: 100,
-		})
-		handleErrors(err)
-		// ListBlobs returns the start of the next segment; you MUST use this to get
-		// the next segment (after processing the current result segment).
-		marker = listBlob.NextMarker
-		for _, blobInfo := range listBlob.Segment.BlobPrefixes {
-			list = append(list, blobInfo.Name)
+		if folder {
+			// Get a result segment starting with the blob indicated by the current Marker.
+			listBlob, err := containerURL.ListBlobsHierarchySegment(ctx, marker, "/", azblob.ListBlobsSegmentOptions{
+				Prefix:     prefix,
+				MaxResults: 100,
+			})
+			handleErrors(err)
+			// ListBlobs returns the start of the next segment; you MUST use this to get
+			// the next segment (after processing the current result segment).
+			marker = listBlob.NextMarker
+			for _, blobInfo := range listBlob.Segment.BlobPrefixes {
+				list = append(list, blobInfo.Name)
+			}
+		} else {
+			// Get a result segment starting with the blob indicated by the current Marker.
+			listBlob, err := containerURL.ListBlobsFlatSegment(ctx, marker, azblob.ListBlobsSegmentOptions{
+				Prefix:     prefix,
+				MaxResults: 100,
+			})
+			handleErrors(err)
+			// ListBlobs returns the start of the next segment; you MUST use this to get
+			// the next segment (after processing the current result segment).
+			marker = listBlob.NextMarker
+			for _, blobInfo := range listBlob.Segment.BlobItems {
+				list = append(list, blobInfo.Name)
+			}	
 		}
+		
 	}
 	return list, nil
 }
