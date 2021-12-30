@@ -113,8 +113,6 @@ func diff(a, b []string) []string {
 	return arr
 }
 
-// ./azcopy copy "https://zoomrecordingarchive.blob.core.windows.net/archive/190054/Y2VkOWRlYTEtNDljNC00MjJmLThkYjEtODY5YWI3YzVkODZk.MP4" "https://newzoomrecordingarchive.blob.core.windows.net/archive/Y2VkOWRlYTEtNDljNC00MjJmLThkYjEtODY5YWI3YzVkODZk.MP4" --s2s-preserve-access-tier=false --include-directory-stub=false --recursive;
-
 func copy(blob, srcSas, distSas string) string {
 	fmt.Printf("copy job: %s is started\n", blob)
 	// copy folder by default
