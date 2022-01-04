@@ -68,7 +68,7 @@ func listBlobs(containerURL azblob.ContainerURL, prefix string, folder bool) ([]
 			// Get a result segment starting with the blob indicated by the current Marker.
 			listBlob, err := containerURL.ListBlobsHierarchySegment(ctx, marker, "/", azblob.ListBlobsSegmentOptions{
 				Prefix:     prefix,
-				MaxResults: 100,
+				MaxResults: 500,
 			})
 			handleErrors(err)
 			// ListBlobs returns the start of the next segment; you MUST use this to get
@@ -81,7 +81,7 @@ func listBlobs(containerURL azblob.ContainerURL, prefix string, folder bool) ([]
 			// Get a result segment starting with the blob indicated by the current Marker.
 			listBlob, err := containerURL.ListBlobsFlatSegment(ctx, marker, azblob.ListBlobsSegmentOptions{
 				Prefix:     prefix,
-				MaxResults: 100,
+				MaxResults: 500,
 			})
 			handleErrors(err)
 			// ListBlobs returns the start of the next segment; you MUST use this to get
@@ -89,9 +89,9 @@ func listBlobs(containerURL azblob.ContainerURL, prefix string, folder bool) ([]
 			marker = listBlob.NextMarker
 			for _, blobInfo := range listBlob.Segment.BlobItems {
 				list = append(list, blobInfo.Name)
-			}	
+			}
 		}
-		
+
 	}
 	return list, nil
 }
